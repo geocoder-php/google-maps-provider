@@ -202,6 +202,7 @@ final class GoogleMaps extends AbstractHttpProvider implements Provider
 
             /** @var GoogleAddress $address */
             $address = $builder->build(GoogleAddress::class);
+            $address = $address->withId($builder->getValue('id'));
             if (isset($result->geometry->location_type)) {
                 $address = $address->withLocationType($result->geometry->location_type);
             }
@@ -244,6 +245,10 @@ final class GoogleMaps extends AbstractHttpProvider implements Provider
     private function updateAddressComponent(AddressBuilder $builder, string $type, $values)
     {
         switch ($type) {
+            case 'place_id':
+                $builder->setValue('id', $values->place_id);
+                break;
+
             case 'postal_code':
                 $builder->setPostalCode($values->long_name);
                 break;
