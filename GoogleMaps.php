@@ -193,6 +193,9 @@ final class GoogleMaps extends AbstractHttpProvider implements Provider
             $builder = new AddressBuilder($this->getName());
             $this->parseCoordinates($builder, $result);
 
+            // set official Google place id
+            $builder->setValue('id', $result->place_id);
+
             // update address components
             foreach ($result->address_components as $component) {
                 foreach ($component->types as $type) {
@@ -245,10 +248,6 @@ final class GoogleMaps extends AbstractHttpProvider implements Provider
     private function updateAddressComponent(AddressBuilder $builder, string $type, $values)
     {
         switch ($type) {
-            case 'place_id':
-                $builder->setValue('id', $values->place_id);
-                break;
-
             case 'postal_code':
                 $builder->setPostalCode($values->long_name);
                 break;
